@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title>一个简单的动画时钟</title>
+    <style>
+        #canvas{
+            border:1px solid #5317ff;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-left: -200px;
+            margin-top: -200px;
+
+
+        }
+    </style>
+
+</head>
+<body>
+<canvas id="canvas" width="400px" height="400px"></canvas>
+</body>
+<script>
+    (function clock(){
+        var ctx=document.getElementById('canvas').getContext('2d');
+        var now=new Date(),
+                hr=now.getHours(),
+                min=now.getMinutes(),
+                sec=now.getSeconds();
+        hr=hr>12?hr-12:hr;//转化为12小时制
+
+        //绘制背景
+        ctx.save();
+        ctx.clearRect(0,0,400,400);
+        ctx.translate(200,200);
+        ctx.rotate(-Math.PI/2);
+        var gradient=ctx.createLinearGradient(150,0,-150,0);
+        gradient.addColorStop(0,'#61ffd8');
+        gradient.addColorStop(1,'#5317ff');
+        ctx.fillStyle=gradient;
+        ctx.beginPath();
+        ctx.arc(0,0,150,0,Math.PI*2,true);
+        ctx.fill();
+
+        //cycle mark of hour
+        ctx.save();
+        for(var i=0;i<12;i++){
+            ctx.beginPath();
+            ctx.strokeStyle='#fff';
+            ctx.lineWidth=3;
+            ctx.rotate(Math.PI/6);
+            ctx.moveTo(140,0);
+            ctx.lineTo(120,0);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        //cycle mark of minute
+        ctx.save();
+        for(var i=0;i<60;i++){
+            if(i%5!=0){
+                ctx.beginPath();
+                ctx.strokeStyle='#000';
+                ctx.lineWidth=2;
+                ctx.moveTo(140,0);
+                ctx.lineTo(132,0);
+                ctx.stroke();
+            }
+            ctx.rotate(Math.PI/30);
+        }
+        ctx.restore();
+
+        //标注时间
+        ctx.save();
+        ctx.rotate(Math.PI/2);
+        ctx.beginPath();
+        //先创建渐变色
+        var gradientColor=ctx.createRadialGradient(0,0,80,0,0,120)
+        gradientColor.addColorStop(0,"blue");
+        gradientColor.addColorStop(1,"purple");
+        ctx.fillStyle=gradientColor;
+        ctx.font="30px Verdana";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText("3",100,0);
+        ctx.fillText("6",0,100);
+        ctx.fillText("9",-100,0);
+        ctx.fillText("12",0,-100);
+        ctx.restore();
+        //绘制时针
+        ctx.save();
+        ctx.rotate(hr*(Math.PI/6)+min*(Math.PI/360)+sec*(Math.PI/21600));
+        ctx.beginPath();
+        ctx.lineWidth=10;
+        ctx.strokeStyle='#fff';
+        ctx.moveTo(0,0);
+        ctx.lineTo(90,0);
+        ctx.stroke();
+        ctx.fillStyle="#ccc";
+        ctx.arc(82,0,3,0,Math.PI*2,true);
+        ctx.fill();
+        ctx.restore();
+
+        //分针
+        ctx.save();
+        ctx.rotate(min*Math.PI/30+sec*Math.PI/1800);
+        ctx.beginPath();
+        ctx.strokeStyle="#fff";
+        ctx.lineWidth=6;
+        ctx.moveTo(0,0);
+        ctx.lineTo(110,0);
+        ctx.stroke();
+        ctx.fillStyle="#ccc";
+        ctx.arc(102,0,2,0,Math.PI*2,true);
+        ctx.fill();
+        ctx.restore();
+
+        //秒针
+        ctx.save();
+        ctx.rotate(Math.PI/30*sec);
+        ctx.beginPath();
+        ctx.lineWidth=5;
+        ctx.strokeStyle="#fff";
+        ctx.moveTo(0,0);
+        ctx.lineTo(120,0);
+        ctx.stroke();
+
+
+        //给秒针加个点缀
+        ctx.beginPath();
+        ctx.lineWidth=12;
+        ctx.lineCap="round";
+        ctx.strokeStyle="#fff";
+        ctx.moveTo(0,0);
+        ctx.lineTo(-22,0);
+        ctx.stroke();
+        ctx.fillStyle="#ccc";
+        ctx.arc(112,0,2,0,Math.PI*2,true);
+        ctx.fill();
+        ctx.restore();
+
+        //绘制中心圈
+        ctx.beginPath();
+        ctx.fillStyle="#fff";
+        ctx.arc(0,0,15,0,Math.PI*2,true);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.strokeStyle="#cdd2d5";
+        ctx.lineWidth=3;
+        ctx.arc(0,0,8,0,Math.PI*2,true);
+        ctx.stroke();
+        ctx.restore();
+        //加上渐变边框
+        ctx.beginPath();
+        ctx.lineWidth=7;
+        var gradient2=ctx.createLinearGradient(0,150,0,-150);
+        gradient2.addColorStop(0,"#7BEFFE");
+        gradient2.addColorStop(1,"#5317ff");
+        ctx.strokeStyle=gradient2;
+        ctx.arc(200,200,152,0,Math.PI*2,true);
+        ctx.stroke();
+        ctx.restore;
+        window.requestAnimationFrame(clock);
+
+    })();
+
+</script>
+</html>
