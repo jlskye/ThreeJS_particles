@@ -168,8 +168,10 @@
         ctx.restore;
 //        window.requestAnimationFrame(clock);
 
+
     }
-    var timerId =setInterval(clock,(1000/60)|0);
+
+    //    var timerId =setInterval(clock,(1000/60)|0);
 
     function init() {
         renderer = new THREE.WebGLRenderer();
@@ -195,10 +197,9 @@
 
     function animate() {
         requestAnimationFrame(animate);
-
         clock();
         texture.needsUpdate = true;
-//        mesh.rotation.y += 0.01;
+        mesh.rotation.y += 0.01;
         mesh.rotation.x += 0.005;
         renderer.render(scene, camera);
     }
