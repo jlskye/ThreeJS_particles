@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+    <title>blue stars in galaxy</title>
+    <style>
+        body{
+            overflow: hidden;
+            margin:0;
+        }
+    </style>
+
+</head>
+<body>
+<!--库依赖。。。mysterious problem--because THREE.Camera has been replaced.-->
+<script src="js/build/three.js"></script>
+
+<script src="js/renderers/Projector.js"></script>
+<script src="js/renderers/CanvasRenderer.js"></script>
+
+<script src="js/libs/stats.min.js"></script>
+<script src="js/libs/tween.min.js"></script>
+<script>
+
+
+    var container, stats;
+    var scene,camera,renderer,particle;
+    var mouseX=0,mouseY=0;
+    var windowHalfX = window.innerWidth / 2, windowHalfY = window.innerHeight / 2;
+    init();
+    animate();
+    function init() {
+        container = document.createElement('div');
+        document.body.appendChild(container);
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000040);
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
+        camera.position.z = 1000;
+
+        stats = new Stats();
+        container.appendChild(stats.dom);
+        renderer=new THREE.CanvasRenderer();
+        renderer.setPixelRatio(window.pixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+//      创建精灵材质
+        material = new THREE.SpriteMaterial({
+            map:new THREE.CanvasTexture(generateSpritesCanvas()),
+            blending:THREE.AdditiveBlending
+        });
+//      创建1000个精灵，并初始化，加入到场景
+        for(var i=0;i<1000;i++){
+            particle = new THREE.Sprite(material);
+            initParticle(particle, i * 10);
+            scene.add(particle);
+        }
+
+//            创建自定义canvas形状
+        function generateSpritesCanvas() {
+            var canvas = document.createElement('canvas');
+            canvas.width = 16;
+            canvas.height = 16;
+
+            var context = canvas.getContext('2d');
+            var gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
+            gradient.addColorStop(0, "rgba(255,255,255,1)");
+            gradient.addColorStop(0.2, "rgba(0,255,255,1)");
+            gradient.addColorStop(0.4, "rgba(0,90,0,1)");
+            gradient.addColorStop(1, "rgba(0,0,0,1)");
+            context.fillStyle=gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            return canvas;
+        }
+
+//          利用动画补间插件tween移动粒子
+        function initParticle(particle,delay) {
+//                先判断粒子类型以及delay参数有无定义
+            var particle = this instanceof THREE.Sprite ? this : particle;
+            var delay = (delay !== undefined) ? delay : 0;
+
+//                初始化粒子初始时刻位置以及伸缩大小
+            particle.position.set(0, 0, 0);
+            particle.scale.x = particle.scale.y = Math.random() * 32 + 16;
+
+//                设置tween的动画
+            new TWEEN.Tween(particle).delay(delay).to({},10000).onComplete(initParticle).start();
+            new TWEEN.Tween(particle.position).delay(delay)
+                    .to({
+                        x: Math.random() * 4000 - 2000,
+                        y: Math.random() * 1000 - 500,
+                        z: Math.random() * 4000 - 2000
+                    }, 10000).start();
+            new TWEEN.Tween(particle.scale).delay(delay).to({x: 0.01, y: 0.01}, 10000).start();
+        }
+
+//        鼠标控制camera
+        document.addEventListener('mousemove', onmouseMove, false);
+        document.addEventListener('touchstart', ontouchStart, false);
+        document.addEventListener('touchmove', ontouchMove, false);
+        window.addEventListener('resize', onResize, false);
+    }
+    function onmouseMove(e) {
+        mouseX = e.clientX - windowHalfX;
+        mouseY = e.clientY - windowHalfY;
+    }
+    function ontouchStart(e) {
+        if(e.touches.length==1){
+            e.preventDefault();
+            mouseX = e.touches[0].pageX - windowHalfX;
+            mouseY = e.touches[0].pageY - windowHalfY;
+        }
+    }
+    function ontouchMove(e) {
+        if(e.touches.length==1){
+            e.preventDefault();
+            mouseX = e.touches[0].pageX - windowHalfX;
+            mouseY = e.touches[0].pageY - windowHalfY;
+        }
+    }
+    function onResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+
+//            重新计算renderer
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        stats.update();
+        render();
+    }
+    function render() {
+        TWEEN.update();
+        camera.position.x += (mouseX - camera.position.x) * 0.05;
+        camera.position.y += -(mouseY + camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+        renderer.render(scene,camera);
+
+    }
+</script>
+</body>
+</html>
