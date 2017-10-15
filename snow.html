@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+    <title>snow weather</title>
+    <style>
+        body{
+            margin: 0;
+            background: #000;
+            font-family: Monospaced;
+            font-size: 13px;
+            text-align: center;
+            font-weight: bold;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/Detector.js"></script>
+    <script src="js/stats.min.js"></script>
+<script>
+    if(!Detector.webgl) Detector.addGetWebGLMessage();
+    var container,stats;
+    var scene,camera,renderer,particles,geometry,materials=[],parameters,size,sprites,color,h,i;
+    var mouseX=0,mouseY=0;
+    var windowHalfX=window.innerWidth/2,windowHalfY=window.innerHeight/2;
+    init();
+    animate();
+
+    function init() {
+        container=document.createElement('div');
+        document.body.appendChild(container);
+
+//    初始化场景
+        scene=new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
+        camera.position.z = 1000;
+        scene.add(camera);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.pixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        stats = new Stats();
+        container.appendChild(stats.domElement);
+
+//      创建一个粒子系统[自定义的点状geometry]
+        geometry = new THREE.Geometry();
+        var range=2000;
+        for(i=0;i<1000;i++){
+            var vertex = new THREE.Vector3();
+            vertex.x = Math.random() * range - range / 2;
+            vertex.y = Math.random() * range - range / 2;
+            vertex.z = Math.random() * range - range / 2;
+            geometry.vertices.push(vertex);
+        }
+
+//        创建一个图片加载器加载5个图片纹理
+        var textureloader = new THREE.TextureLoader();
+        var sprite1 = textureloader.load('image/snowflake1.png');
+        var sprite2 = textureloader.load('image/snowflake2.png');
+        var sprite3 = textureloader.load('image/snowflake3.png');
+        var sprite4 = textureloader.load('image/snowflake4.png');
+        var sprite5 = textureloader.load('image/snowflake5.png');
+
+//        初始化5份材质参数
+        parameters=[
+                [[1.0,0.2,0.5],sprite1,20],
+                [[0.95,0.1,0.5],sprite2,15],
+                [[0.90,0.05,0.5],sprite3,10],
+                [[0.85,0,0.5],sprite4,8],
+                [[0.8,0,0.5],sprite5,5]
+        ];
+
+//        创建5份材质,然后分别生成5个point例子对象
+        for(i=0;i<parameters.length;i++){
+            color=parameters[i][0];
+            sprites=parameters[i][1];
+            size=parameters[i][2];
+//            每一次循环修改size，sprites,color的值
+            materials[i] = new THREE.PointsMaterial(
+                    {
+                        size:size,
+                        map:sprites,
+                        blending:THREE.AdditiveBlending,
+                        depthTest:false,
+                        transparent:true
+                    }
+            );
+            materials[i].color.setHSL(color[0], color[1], color[2]);
+            particles = new THREE.Points(geometry, materials[i]);
+
+//            随机初始化point粒子系统x,y,z坐标轴位置
+            particles.position.x = Math.random() * 6;
+            particles.position.y = Math.random() * 6;
+            particles.position.z = Math.random() * 6;
+            scene.add(particles);
+        }
+        window.addEventListener('resize', onWindowResize, false);
+        window.addEventListener('mousemove', onMouseMove, false);
+        document.addEventListener('touchstart', onTouchStart, false);
+        document.addEventListener('touchmove', onTouchMove, false);
+
+    }
+    function onWindowResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+//    随着鼠标移动改变camera的位置
+    function onMouseMove(e) {
+        mouseX = e.clientX - windowHalfX;
+        mouseY = e.clientY - windowHalfY;
+    }
+
+//    给触摸界面提供有力支持
+    function onTouchStart(e) {
+        if(e.touches.length===1){
+            e.preventDefault();
+            mouseX = e.touches[0].pageX - windowHalfX;
+            mouseY = e.touches[0].pageY - windowHalfY;
+        }
+    }
+//    给触摸界面提供有力支持
+    function onTouchMove(e) {
+        if(e.touches.length===1){
+            e.preventDefault();
+            mouseX = e.touches[0].pageX - windowHalfX;
+            mouseY = e.touches[0].pageY - windowHalfY;
+        }
+    }
+    function animate() {
+        requestAnimationFrame(animate);
+        stats.update();
+        render();
+    }
+    function render() {
+
+//        camera的位置跟随鼠标方向移动
+        camera.position.x += (mouseX - camera.position.x) * 0.05;
+        camera.position.y += -(mouseY + camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+//        让五个point粒子系统围绕y轴（正反方向）旋转object.rotation.y
+        var time = Date.now()*0.00005;
+        for(i=0;i<scene.children.length;i++){
+            var object=scene.children[i];
+            if(object instanceof THREE.Points){
+                object.rotation.y = time * (i < 3 ? i + 1 : -(i + 1));
+            }
+        }
+
+//        render函数重置color，每次刷新改变hue值,然颜色不断变化
+        for(i=0;i<materials.length;i++){
+            color=parameters[i][0];
+            h=(360*(color[0]+time)%360)/360;
+            materials[i].color.setHSL(h, color[1], color[2]);
+
+        }
+        renderer.render(scene, camera);
+
+    }
+</script>
+</body>
+</html>

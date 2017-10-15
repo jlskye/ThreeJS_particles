@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>102任务卡</title>
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+        }
+        body{
+
+            margin: 30px 30px 30px 30px;
+        }
+        li{
+            margin-left: 20px;
+            margin-top: 20px;
+            font-family: 华文中宋;
+            font-size: 20px;
+        }
+        #info{
+            padding-top: 25px;
+            padding-bottom: 15px;
+        }
+        .myForm{
+            font-family: '宋体' ;font-size: 48px;
+            font-weight: bold;
+        }
+        .title{
+            font-family: '宋体' ;font-size: 36px;
+            font-weight: bold;
+            margin:10px 15px 0px 0px;
+        }
+        td{
+            width: 300px;
+        }
+        .textInput{
+            border-radius: 6px;
+        }
+        .content{
+            margin-left: 60px;
+
+        }
+        .radioInput{
+            background: dodgerblue;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            position: relative;
+            vertical-align: middle;
+            /*margin:5px 5px 5px 5px;*/
+            z-index: 100;
+            opacity: 0;
+        }
+        .radio_btn{
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            display: inline-block;
+            /*background: rgba(221, 221, 221, 0.95);*/
+            background-color: #3b98fb;
+            vertical-align: middle;
+            position: relative;
+            margin:5px 5px 5px 5px;
+        }
+        .radio_btn span{
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            background: white;
+            display: inline-block;
+            z-index: 1;
+            top:10px;
+            left:10px;
+            position: absolute;
+            vertical-align: middle;
+
+        }
+        .radio_btn input[type="radio"] +span{
+            opacity: 0;
+        }
+
+        .radio_btn input[type="radio"]:checked +span{
+            opacity: 1;
+        }
+
+        .checkbox_btn{
+            display: inline-block;
+            vertical-align: middle;
+            width: 20px;
+            height:20px;
+            background: #3b98fb;
+            position: relative;
+            margin: 10px 5px 10px 5px;
+
+        }
+        .checkbox_btn input{
+            opacity: 0;
+            z-index: 100;
+            height: 20px;
+            width: 20px;
+            position: absolute;
+        }
+        .checkbox_btn span{
+            font-family: Arial;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            -webkit-transform: rotate(30deg);
+            -moz-transform: rotate(30deg);
+            -ms-transform: rotate(30deg);
+            -o-transform: rotate(30deg);
+            transform: rotate(30deg);
+            z-index: 2;
+            position: absolute;
+            top:-5px;
+            left: -2px;
+
+        }
+        .checkbox_btn input[type="checkbox"] +span{
+            opacity: 0;
+        }
+        .checkbox_btn input[type="checkbox"]:checked +span{
+            opacity: 1;
+        }
+        label{
+            margin-left: 20px;
+            margin-top: 20px;
+            font-family: 华文中宋;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<form>
+
+        <div class="myForm">
+            统一建模语言理论测试
+        </div>
+    <div id="info">
+        <table border="0">
+            <tr>
+                <td>考试科目:统一建模语言 </td>
+                <td>时间:100分钟 </td>
+                <td>得分:100 </td>
+            </tr>
+            <tr>
+                <td>班级:&nbsp;&nbsp;<input type="text" class="textInput"></td>
+                <td>学号:<input type="text" class="textInput"></td>
+                <td>姓名:<input type="text" class="textInput"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="No1">
+        <div class="title">
+            一、填空题（每空5分，共20分）
+        </div><br/>
+        <div class="content">
+            <ol>
+                <li>UML的中文全称是: <input type="text" class="textInput"></li>
+                <li>对象最突出的特征是: <input type="text" class="textInput"> <input type="text" class="textInput"> <input type="text" class="textInput"></li>
+            </ol>
+        </div>
+    </div>
+    <div id="No2">
+        <div class="title">
+            二、选择题（每题10分，共20分）
+        </div><br/>
+        <div class="content">
+            <ol>
+                <li> UML与软件工程的关系是:<br>
+                    <form>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> (A) UML就是软件工程
+                        <br>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" checked class="radioInput">
+                            <span></span>
+                        </span> (B) UML参与到软件工程中软件开发过程的几个阶段
+                       <br>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> (C) UML与软件工程无关
+                       <br>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> (D) UML是软件工程的一部分
+                    </form>
+                </li>
+                <li> Java语言支持:<br>
+                    <form>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> (A) UML就是软件工程
+                        <br>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" checked class="radioInput">
+                            <span></span>
+                        </span> (B) UML参与到软件工程中软件开发过程的几个阶段
+                        <br>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> (C) UML与软件工程无关
+                        <br>
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> (D) UML是软件工程的一部分
+                    </form>
+
+                </li>
+
+            </ol>
+        </div>
+
+    </div>
+   <div id="No3">
+       <div class="title">
+           三、多择题（每题10分，共20分）
+       </div><br/>
+       <div class="content">
+            <ol>
+                <li> 用例的粒度分为以下哪三种:<br>
+                    <form>
+                            <div class="checkbox_btn">
+                                <input type="checkbox" name="a" checked>
+                                <span>√</span>
+                            </div>  (A) 概述级
+                        <br>
+                        <div class="checkbox_btn">
+                            <input type="checkbox" name="a" checked >
+                            <span>√</span>
+                        </div>  (B) 需求级
+                        <br>
+                        <div class="checkbox_btn">
+                            <input type="checkbox" name="a" >
+                            <span>√</span>
+                        </div>  (C) 用户目标级
+                        <br>
+                        <div class="checkbox_btn">
+                            <input type="checkbox" name="a" checked>
+                            <span>√</span>
+                        </div>  (D) 子功能级
+                    </form>
+                <li> 用例的粒度分为以下哪三种:<br>
+                    <form>
+                            <div class="checkbox_btn">
+                                <input type="checkbox" name="a" checked>
+                                <span>√</span>
+                            </div>   (A) 名称(Name)
+                        <br>
+                        <div class="checkbox_btn">
+                            <input type="checkbox" name="a" checked >
+                            <span>√</span>
+                        </div>   (B) 属性(Attribute)
+                        <br>
+                        <div class="checkbox_btn">
+                            <input type="checkbox" name="a" checked>
+                            <span>√</span>
+                        </div>   (C) 操作(Operation)
+                        <br>
+                        <div class="checkbox_btn">
+                            <input type="checkbox" name="a" >
+                            <span>√</span>
+                        </div>   (D) 方法(Function)
+                    </form>
+
+                </li>
+            </ol>
+       </div>
+    </div>
+   <div id="No4">
+       <div class="title">
+           四、判断题（每题10分，共20分）
+       </div><br/>
+       <div class="content">
+           <ol>
+               <li>
+                   <form>用例图只是用于和客户交流和沟通的,用于确定需求。
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> √
+                        <span class="radio_btn">
+                            <input type="radio" name="a" checked class="radioInput">
+                            <span></span>
+                        </span> ×
+                       </form>
+               </li>
+               <li>
+                   <form>在状态图中,终止状态在一个状态图中允许有任意多个。
+                        <span class="radio_btn">
+                            <input type="radio" name="a" class="radioInput">
+                            <span></span>
+                        </span> √
+                        <span class="radio_btn">
+                            <input type="radio" name="a" checked class="radioInput">
+                            <span></span>
+                        </span> ×
+                   </form>
+               </li>
+           </ol>
+       </div>
+    </div>
+    <div id="No5">
+        <div class="title">
+            五、简答题（每题20分，共20分
+        </div><br/>
+        <div class="content">
+            <label>1. 简述什么是模型以及模型的表现形式？</label><br>
+            <textarea name="message" rows="10" cols="120">通过主观意识借助实体或者虚拟表现构成客观阐述形态结构的一种表达目的的物件（物件并不等于物体，不局限于实体与虚拟、不限于平面与立体）。
+            </textarea><br><br>
+        </div>
+    </div>
+    <input type="submit" value="计算分数" />
+
+</form>
+</body>
+</html>
