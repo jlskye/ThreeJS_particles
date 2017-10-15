@@ -3,6 +3,7 @@
  * @author mr.doob / http://mrdoob.com/
  */
 
+<<<<<<< HEAD
 var Detector = {
 
 	canvas: !! window.CanvasRenderingContext2D,
@@ -19,6 +20,12 @@ var Detector = {
 		}
 
 	} )(),
+=======
+Detector = {
+
+	canvas: !! window.CanvasRenderingContext2D,
+	webgl: ( function () { try { return !! window.WebGLRenderingContext && !! document.createElement( 'canvas' ).getContext( 'experimental-webgl' ); } catch( e ) { return false; } } )(),
+>>>>>>> 872a86e7f07f910b9605cbb247906a730a5e5ff5
 	workers: !! window.Worker,
 	fileapi: window.File && window.FileReader && window.FileList && window.Blob,
 
@@ -69,6 +76,7 @@ var Detector = {
 	}
 
 };
+<<<<<<< HEAD
 
 // browserify support
 if ( typeof module === 'object' ) {
@@ -76,3 +84,5 @@ if ( typeof module === 'object' ) {
 	module.exports = Detector;
 
 }
+=======
+>>>>>>> 872a86e7f07f910b9605cbb247906a730a5e5ff5
